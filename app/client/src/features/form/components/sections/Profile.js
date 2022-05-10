@@ -71,8 +71,18 @@ function Profile({
       />
       <LabeledInput
         name="basics.website"
-        label="Link"
+        label="Website"
         placeholder="mycoolportfolio.com/myname"
+      />
+      <LabeledInput
+        name="basics.github"
+        label="Github"
+        placeholder="github.com/myname"
+      />
+      <LabeledInput
+        name="basics.twitter"
+        label="Twitter"
+        placeholder="twitter.com/myname"
       />
       {selectedTemplate === 10 && (
         <React.Fragment>
