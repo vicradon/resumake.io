@@ -34,7 +34,13 @@ function uploadJSON(file: File): AsyncAction {
     const data = new FormData()
 
     data.append('json-file', file)
-
+    
+    const reader = new FileReader();
+    reader.addEventListener('load', (event) => {
+      console.log(event.target.result)
+    });
+    reader.readAsDataURL(file);
+    
     const request = {
       method: 'POST',
       headers: { Accept: 'application/json' },
@@ -45,6 +51,7 @@ function uploadJSON(file: File): AsyncAction {
       const response = await fetch('/api/upload', request)
       if (response.ok) {
         const json = await response.json()
+        console.log(json)
         dispatch(uploadJSONSuccess(json))
       } else {
         const errMessage = await response.text()
@@ -183,6 +190,32 @@ function addAward(): Action {
 function removeAward(): Action {
   return {
     type: 'REMOVE_AWARD'
+  }
+}
+
+export const addVolunteering: Action = () => {
+  return {
+    type: 'ADD_VOLUNTEERING'
+  }
+}
+
+export const removeVolunteering: Action = ()  => {
+  return {
+    type: 'REMOVE_VOLUNTEERING'
+  }
+}
+
+export const addVolunteeringAchievement: Action = (index: number) => {
+  return {
+    type: 'ADD_VOLUNTEERING_ACHIEVEMENT',
+    index
+  }
+}
+
+export const removeVolunteeringAchievement: Action = (index: number) => {
+  return {
+    type: 'REMOVE_VOLUNTEERING_ACHIEVEMENT',
+    index
   }
 }
 

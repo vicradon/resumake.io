@@ -16,7 +16,7 @@ const generator: Template2Generator = {
       return ''
     }
 
-    const { name, email, phone, location = {}, website } = basics
+    const { name, email, phone, location = {}, website, twitter, linkedin, github, title } = basics
 
     let nameLine = ''
 
@@ -35,24 +35,33 @@ const generator: Template2Generator = {
       nameLine = `\\headerfirstnamestyle{${nameStart}} \\headerlastnamestyle{${nameEnd}} \\\\`
     }
 
+    const titleLine = title ? `\\headerpositionstyle{${title}} \\\\` : ''
     const emailLine = email ? `{\\faEnvelope\\ ${email}}` : ''
     const phoneLine = phone ? `{\\faMobile\\ ${phone}}` : ''
     const addressLine = location.address
       ? `{\\faMapMarker\\ ${location.address}}`
       : ''
     const websiteLine = website ? `{\\faLink\\ ${website}}` : ''
+    const githubLine = github ? `{\\faGithub\\ ${github}}` : ''
+    const linkedInLine = linkedin ? `{\\faLinkedin\\ ${linkedin}}` : ''
+    const twitterLine = twitter ? `{\\faTwitter\\ ${twitter}}` : ''
     const info = [emailLine, phoneLine, addressLine, websiteLine]
       .filter(Boolean)
       .join(' | ')
-
+    const socialLinks = [ githubLine, linkedInLine, twitterLine]
+      .filter(Boolean)
+      .join(' | ')
     return stripIndent`
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       %     Profile
       %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \\begin{center}
       ${nameLine}
+      ${titleLine}
       \\vspace{2mm}
-      ${info}
+      ${info} \\linebreak
+      \\vspace{1mm}
+      ${socialLinks}
       \\end{center}
     `
   },
@@ -242,6 +251,51 @@ const generator: Template2Generator = {
     `
   },
 
+  volunteeringSection(volunteering, heading) {
+    if (!volunteering) {
+      return ''
+    }
+    return source`
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      %     Volunteering
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \\cvsection{${heading || 'Volunteering'}}
+      \\begin{cventries}
+      ${volunteering.map(program => {
+        const { organization, position, website, startDate, endDate, summary, achievements } = program
+
+        let achievementsLine = ""
+        let dateRange = ''
+
+        if (achievements) {
+          achievementsLine = source`
+            \\begin{cvitems}
+              ${achievements.map(achievement => `\\item {${achievement}}`)}
+            \\end{cvitems}
+            `
+        }
+
+        if (startDate && endDate) {
+          dateRange = `${startDate} – ${endDate}`
+        } else if (startDate) {
+          dateRange = `${startDate} – Present`
+        } else {
+          dateRange = endDate
+        }
+
+        return stripIndent`
+          \\cventry
+            {${position || ''}}
+            {${organization || ''}}
+            {${website || ''}}
+            {${dateRange || ''}}
+            {${achievementsLine || ''}}
+        `
+      })}
+      \\end{cventries}
+    `
+  },
+
   resumeHeader() {
     return stripIndent`
     %!TEX TS-program = xelatex
@@ -320,6 +374,9 @@ function template2(values: SanitizedValues) {
 
           case 'awards':
             return generator.awardsSection(values.awards, headings.awards)
+
+          case 'volunteering':
+            return generator.volunteeringSection(values.volunteering, headings.volunteering)
 
           default:
             return ''

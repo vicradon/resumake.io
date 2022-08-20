@@ -50,7 +50,8 @@ function getValidJSON(json: Object): Object {
     work = [{ highlights: [''] }],
     skills = [{ keywords: [''] }],
     projects = [{ keywords: [''] }],
-    awards = []
+    awards = [],
+    volunteering = [{achievements: ['']}],
   } = json
 
   const validJSON = {
@@ -61,7 +62,8 @@ function getValidJSON(json: Object): Object {
     work,
     skills,
     projects,
-    awards
+    awards,
+    volunteering
   }
 
   return validJSON

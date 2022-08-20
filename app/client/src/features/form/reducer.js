@@ -15,13 +15,18 @@ const initialState = {
       education: '',
       skills: '',
       projects: '',
-      awards: ''
+      awards: '',
+      volunteering: '',
     },
     basics: {
+      title: '',
       name: '',
       email: '',
       phone: '',
       website: '',
+      twitter: "",
+      github: "",
+      linkedin: "",
       location: {
         address: ''
       },
@@ -70,6 +75,17 @@ const initialState = {
         date: '',
         awarder: '',
         summary: ''
+      }
+    ],
+    volunteering: [
+      {
+        organization: '',
+        position: '',
+        website: '',
+        startDate: '',
+        endDate: '',
+        achievements: [''],
+        summary: '',
       }
     ]
   }
@@ -405,6 +421,77 @@ function form(state: FormState = initialState, action: Action): FormState {
         }
       }
     }
+
+    case 'ADD_VOLUNTEERING': {
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          volunteering: [...state.values.volunteering, {}]
+        }
+      }
+    }
+    case 'REMOVE_VOLUNTEERING': {
+      if (state.values.volunteering.length <= 1) {
+        return state
+      }
+
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          volunteering: state.values.volunteering.slice(0, -1)
+        }
+      }
+    }
+
+    case 'ADD_VOLUNTEERING_ACHIEVEMENT': {
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          volunteering: [
+            ...state.values.volunteering.slice(0, action.index),
+            {
+              ...state.values.volunteering[action.index],
+              achievements: [
+                ...state.values.volunteering[action.index].achievements,
+                ''
+              ]
+            },
+            ...state.values.volunteering.slice(action.index + 1)
+          ]
+        }
+      }
+    }
+
+    case 'REMOVE_VOLUNTEERING_ACHIEVEMENT': {
+      if (
+        !state.values.volunteering[action.index] ||
+        !state.values.volunteering[action.index].achievements ||
+        state.values.volunteering[action.index].achievements.length <= 1
+      ) {
+        return state
+      }
+
+      return {
+        ...state,
+        values: {
+          ...state.values,
+          volunteering: [
+            ...state.values.volunteering.slice(0, action.index),
+            {
+              ...state.values.volunteering[action.index],
+              achievements: state.values.volunteering[action.index].achievements.slice(
+                0,
+                -1
+              )
+            },
+            ...state.values.volunteering.slice(action.index + 1)
+          ]
+        }
+      }
+    }      
 
     default:
       return state

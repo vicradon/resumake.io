@@ -55,6 +55,11 @@ function Profile({
         placeholder="John Smith"
       />
       <LabeledInput
+        name="basics.title"
+        label="Title"
+        placeholder="Software Engineer"
+      />
+      <LabeledInput
         name="basics.email"
         label="Email"
         placeholder="johnsmith@gmail.com"
@@ -78,6 +83,11 @@ function Profile({
         name="basics.github"
         label="Github"
         placeholder="github.com/myname"
+      />
+      <LabeledInput
+        name="basics.linkedin"
+        label="LinkedIn"
+        placeholder="https://linkedin.com/in/myname"
       />
       <LabeledInput
         name="basics.twitter"

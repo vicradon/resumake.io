@@ -9,7 +9,8 @@ type Headings = {
   education: string,
   skills: string,
   projects: string,
-  awards: string
+  awards: string,
+  volunteering: string,
 }
 
 type Basics = {
@@ -17,6 +18,9 @@ type Basics = {
   email?: ?string,
   phone?: ?string,
   website?: ?string,
+  twitter?: ?string,
+  github?: ?string,
+  linkedin?: ?string,
   location?: {
     address?: ?string
   }
@@ -61,6 +65,15 @@ type Award = {
   summary?: ?string
 }
 
+type Volunteering = {
+  organization?: ?string,
+  position?: ?string,
+  website?: ?string,
+  startDate?: ?string,
+  endDate?: ?string,
+  summary?: ?string
+}
+
 type FormValues = {
   selectedTemplate: number,
   headings: Headings,
@@ -69,7 +82,8 @@ type FormValues = {
   education: Array<School>,
   skills: Array<Skill>,
   projects: Array<Project>,
-  awards: Array<Award>
+  awards: Array<Award>,
+  volunteering: Array<Volunteering>,
 }
 
 type FormValuesWithSectionOrder = FormValues & {
@@ -110,5 +124,7 @@ type FormAction =
   | { type: 'REMOVE_PROJECT_KEYWORD', index: number }
   | { type: 'ADD_AWARD' }
   | { type: 'REMOVE_AWARD' }
+  | { type: 'ADD_VOLUNTEERING' }
+  | { type: 'REMOVE_VOLUNTEERING' }
 
 export type { FormState, FormAction, FormValues, FormValuesWithSectionOrder }

@@ -91,7 +91,8 @@ test('jsonResume should validate and extract the JSON from file', async () => {
     work: [{ highlights: [''] }],
     skills: [{ keywords: [''] }],
     projects: [{ keywords: [''] }],
-    awards: []
+    awards: [],
+    volunteering: [{ achievements: [''] }]
   }
 
   const middleware = jsonResume()
